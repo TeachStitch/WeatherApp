@@ -17,7 +17,7 @@ class WeatherViewController: UIViewController {
         }
     }
     
-    private enum CellType: Int, CaseIterable {
+    enum CellType: Int, CaseIterable {
         case mainInfo = 0
         case hourlyWeather
         case dailyWeather
@@ -39,8 +39,11 @@ class WeatherViewController: UIViewController {
         return button
     }()
     
-    private lazy var listView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = .zero
+        flowLayout.minimumLineSpacing = .zero
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.register(MainInfoCollectionViewCell.self)
         collectionView.register(HourlyWeatherCollectionViewCell.self)
         collectionView.register(WeekDayWeatherCollectionViewCell.self)
@@ -72,7 +75,7 @@ class WeatherViewController: UIViewController {
     
     private func setUpSubviews() {
         view.backgroundColor = .Assets.blue01
-        view.addSubview(listView)
+        view.addSubview(collectionView)
     }
     
     private func setUpNavigationBar() {
@@ -83,10 +86,10 @@ class WeatherViewController: UIViewController {
     
     private func setUpAutoLayoutConstraints() {
         NSLayoutConstraint.activate([
-            listView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            listView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            listView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            listView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
@@ -111,6 +114,18 @@ extension WeatherViewController: WeatherViewModelDelegate {
     func pushViewController(_ viewController: UIViewController) {
         navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func updateCell(_ type: CellType) {
+        let indexPath = IndexPath(item: type.rawValue, section: .zero)
+        switch type {
+        case .mainInfo:
+            collectionView.reconfigureItems(at: [indexPath])
+        case .hourlyWeather:
+            collectionView.reconfigureItems(at: [indexPath])
+        case .dailyWeather:
+            collectionView.reconfigureItems(at: [indexPath])
+        }
+    }
 }
 
 extension WeatherViewController: UICollectionViewDataSource {
@@ -123,13 +138,20 @@ extension WeatherViewController: UICollectionViewDataSource {
         case .mainInfo:
             guard let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
             
+            // MOCK
+            cell.configure(with: mainInfoModel)
+            
             return cell
         case .hourlyWeather:
             guard let cell: HourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+            // MOCK
+            cell.configure(with: hourlyModels)
             
             return cell
         case .dailyWeather:
             guard let cell: WeekDayWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+            // MOCK
+            cell.configure(with: weekModels)
             
             return cell
         case .none:
@@ -142,10 +164,10 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else { return CGSize(width: 1, height: 1) }
         
-        let numberOfCellsPerRow = 3.0
-        let offset = flowLayout.sectionInset.top + abs(flowLayout.sectionInset.bottom) + (flowLayout.minimumInteritemSpacing * (numberOfCellsPerRow - 1))
-        let mainInfoCellHeight = (collectionView.bounds.height - offset) / numberOfCellsPerRow
-        let hourlyWeatherCellHeight = (collectionView.bounds.height - mainInfoCellHeight) * 0.3
+        let numberOfVisibleCells = 3.0
+        let offset = flowLayout.sectionInset.top + abs(flowLayout.sectionInset.bottom) + (flowLayout.minimumLineSpacing * (numberOfVisibleCells - 1))
+        let mainInfoCellHeight = (collectionView.bounds.height - offset) / numberOfVisibleCells
+        let hourlyWeatherCellHeight = (collectionView.bounds.height - mainInfoCellHeight) * 0.2
         let dailyWeatherCellHeight = collectionView.bounds.height - mainInfoCellHeight - hourlyWeatherCellHeight
         
         switch CellType(rawValue: indexPath.item) {

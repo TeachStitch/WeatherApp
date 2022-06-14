@@ -16,12 +16,12 @@ protocol WeatherViewModelProvider: AnyObject {
 protocol WeatherViewModelDelegate: AnyObject {
     func presentAlert(title: String, message: String)
     func pushViewController(_ viewController: UIViewController)
+    func updateCell(_ type: WeatherViewController.CellType)
 }
 
 class WeatherViewModel: WeatherViewModelProvider {
     
     private let model: WeatherModelProvider?
-    
     weak var delegate: WeatherViewModelDelegate?
     
     init(model: WeatherModelProvider?) {

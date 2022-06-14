@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol MainInfoCollectionViewCellConfigurable {
+    var date: Date { get }
+    var weatherIconName: String { get }
+    var temperature: Double { get }
+    var humidity: Double { get }
+    var windSpeed: Double { get }
+}
+
 class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private enum Constants {
@@ -24,7 +32,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-        label.text = "Mon, 20 July"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -32,7 +39,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var weatherStateImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "star")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
@@ -41,7 +47,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-        label.text = "27"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -50,7 +55,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var humidityLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-        label.text = "57%"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -59,7 +63,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var windSpeedLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-        label.text = "27 mps"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -104,8 +107,12 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
         setUpAutoLayoutConstraints()
     }
     
-    func configure(with viewModel: String) {
-        print(#function)
+    func configure(with model: MainInfoCollectionViewCellConfigurable) {
+        dateLabel.text = model.date.formatted(.dateTime.weekday(.abbreviated).day(.defaultDigits).month(.wide))
+        weatherStateImageView.image = UIImage(systemName: "star")
+        temperatureLabel.text = Measurement(value: model.temperature, unit: UnitTemperature.celsius).formatted()
+        humidityLabel.text = "\(model.humidity.formatted())%"
+        windSpeedLabel.text = Measurement(value: model.windSpeed, unit: UnitSpeed.metersPerSecond).formatted()
     }
     
     private func setUpSubviews() {
@@ -119,13 +126,12 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Layout.dateLabelEdgeInsets.top),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.dateLabelEdgeInsets.right),
             
-            weatherStateImageView.widthAnchor.constraint(equalToConstant: Constants.Layout.weatherStateImageViewHeight),
-            
-            temperatureLabel.heightAnchor.constraint(equalToConstant: Constants.Layout.infoLabelHeight),
             humidityLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
             windSpeedLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
             
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
+            mainStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
+            mainStackView.heightAnchor.constraint(equalToConstant: 130),
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.right),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.bottom)
         ])

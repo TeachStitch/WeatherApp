@@ -16,13 +16,13 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
         enum Layout {
             static let stackViewEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
             static let timeLabelHeight = 25.0
+            static let weatherImageHeight = 15.0
         }
     }
     
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-        label.text = "10:00"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -30,8 +30,6 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private lazy var weatherStateImageView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "star")
         imageView.contentMode = .left
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -55,7 +53,8 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
         ])
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
-        stackView.setCustomSpacing(Constants.timeLabelCustomSpacing, after: timeLabel)
+        stackView.distribution = .fillProportionally
+//        stackView.setCustomSpacing(Constants.timeLabelCustomSpacing, after: timeLabel)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -74,6 +73,12 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
         setUpAutoLayoutConstraints()
     }
     
+    func configure(with model: HourlyWeatherCollectionViewCellConfigurable) {
+        timeLabel.text = model.date.formatted(.dateTime.hour())
+        weatherStateImageView.image = UIImage(systemName: "star")
+        temperatureLabel.text = Measurement(value: model.temperature, unit: UnitTemperature.celsius).formatted()
+    }
+    
     private func setUpSubviews() {
         contentView.addSubview(stackView)
     }
@@ -83,10 +88,11 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.stackViewEdgeInsets.left),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Layout.stackViewEdgeInsets.top),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.stackViewEdgeInsets.right),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.stackViewEdgeInsets.bottom),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.stackViewEdgeInsets.bottom)
             
-            timeLabel.heightAnchor.constraint(equalToConstant: Constants.Layout.timeLabelHeight),
-            weatherStateImageView.heightAnchor.constraint(equalTo: timeLabel.heightAnchor),
+//            timeLabel.heightAnchor.constraint(equalToConstant: Constants.Layout.timeLabelHeight),
+//            weatherStateImageView.heightAnchor.constraint(equalToConstant: Constants.Layout.weatherImageHeight),
+//            weatherStateImageView.widthAnchor.constraint(equalTo: weatherStateImageView.heightAnchor),
 //            timeLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.Layout.timeLabelHeight),
 //            temperatureLabel.heightAnchor.constraint(equalTo: timeLabel.heightAnchor)
         ])

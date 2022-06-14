@@ -20,6 +20,7 @@
 		AA4E575328587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575228587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift */; };
 		AA4E575628588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575528588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift */; };
 		AA4E575828589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575728589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift */; };
+		AA8D1F282858F2EB007B73C9 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8D1F272858F2EB007B73C9 /* MockData.swift */; };
 		AAA8919B2857B185002E6D9A /* MainInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA8919A2857B185002E6D9A /* MainInfoCollectionViewCell.swift */; };
 		AAA8919D2857BAAD002E6D9A /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA8919C2857BAAD002E6D9A /* UICollectionView+Extensions.swift */; };
 		AAA8919F2857BB2F002E6D9A /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA8919E2857BB2F002E6D9A /* UITableView+Extensions.swift */; };
@@ -48,6 +49,7 @@
 		AA4E575228587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryHourlyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
 		AA4E575528588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
 		AA4E575728589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryWeekDayCollectionViewCell.swift; sourceTree = "<group>"; };
+		AA8D1F272858F2EB007B73C9 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		AAA8919A2857B185002E6D9A /* MainInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		AAA8919C2857BAAD002E6D9A /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		AAA8919E2857BB2F002E6D9A /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		AA30753528572D4F002D88E3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AA8D1F262858F2BF007B73C9 /* NetworkService */,
 				AA26F4A3285760B8006A8FED /* LocationService.swift */,
 			);
 			path = Services;
@@ -157,6 +160,13 @@
 				AA4E575728589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift */,
 			);
 			path = "WeekDayWeatherColleсtionViewCell";
+			sourceTree = "<group>";
+		};
+		AA8D1F262858F2BF007B73C9 /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NetworkService;
 			sourceTree = "<group>";
 		};
 		AAA891992857B16C002E6D9A /* Cells */ = {
@@ -214,6 +224,7 @@
 				AAF81717285392CF0075A631 /* AppDelegate.swift */,
 				AAF81719285392CF0075A631 /* SceneDelegate.swift */,
 				AA30753D28572EBD002D88E3 /* WeatherScreen */,
+				AA8D1F272858F2EB007B73C9 /* MockData.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -379,6 +390,7 @@
 				AA26F4A4285760B8006A8FED /* LocationService.swift in Sources */,
 				AA4E575628588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift in Sources */,
 				AAF6C897285777E1007FA5DA /* WeatherModel.swift in Sources */,
+				AA8D1F282858F2EB007B73C9 /* MockData.swift in Sources */,
 				AA30753828572DBE002D88E3 /* ModelAssembly.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

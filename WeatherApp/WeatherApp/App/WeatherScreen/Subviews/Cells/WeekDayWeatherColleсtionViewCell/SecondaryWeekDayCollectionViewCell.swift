@@ -20,7 +20,6 @@ class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
     private lazy var weekdayLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "Mon"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -29,7 +28,6 @@ class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "27/19"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -38,7 +36,6 @@ class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
     private lazy var weatherStateImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "star")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
@@ -68,6 +65,15 @@ class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
         super.init(coder: coder)
         setUpSubviews()
         setUpAutoLayoutConstraints()
+    }
+    
+    func configure(with model: WeekDayWeatherCollectionViewCellConfigurable) {
+        weekdayLabel.text = model.date.formatted(.dateTime.weekday(.abbreviated))
+        weatherStateImageView.image = UIImage(systemName: "star")
+        
+        let currentTemperature = Measurement(value: model.currentTemperature, unit: UnitTemperature.celsius).formatted()
+        let averageTemperature = Measurement(value: model.averageTemperature, unit: UnitTemperature.celsius).formatted()
+        temperatureLabel.text = "\(currentTemperature)/\(averageTemperature)"
     }
     
     private func setUpSubviews() {

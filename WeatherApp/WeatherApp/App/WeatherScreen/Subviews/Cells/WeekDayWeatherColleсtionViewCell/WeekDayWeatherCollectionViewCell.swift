@@ -7,16 +7,25 @@
 
 import UIKit
 
+protocol WeekDayWeatherCollectionViewCellConfigurable {
+    var date: Date { get }
+    var currentTemperature: Double { get }
+    var averageTemperature: Double { get }
+    var weatherIconName: String { get }
+}
+
 class WeekDayWeatherCollectionViewCell: UICollectionViewCell {
+    
+    private var models = [WeekDayWeatherCollectionViewCellConfigurable]()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = .zero
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(SecondaryWeekDayCollectionViewCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.isPagingEnabled = true
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -35,6 +44,11 @@ class WeekDayWeatherCollectionViewCell: UICollectionViewCell {
         setUpAutoLayoutConstraints()
     }
     
+    func configure(with models: [WeekDayWeatherCollectionViewCellConfigurable]) {
+        self.models = models
+//        collectionView.reloadData()
+    }
+    
     private func setUpSubviews() {
         contentView.addSubview(collectionView)
     }
@@ -51,11 +65,12 @@ class WeekDayWeatherCollectionViewCell: UICollectionViewCell {
 
 extension WeekDayWeatherCollectionViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return models.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell: SecondaryWeekDayCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+        cell.configure(with: models[indexPath.item])
         
         return cell
     }
@@ -65,9 +80,9 @@ extension WeekDayWeatherCollectionViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else { return CGSize(width: 1, height: 1) }
         
-        let numberOfCellsPerRow = 6.0
-        let offset = flowLayout.sectionInset.top + abs(flowLayout.sectionInset.bottom) + (flowLayout.minimumInteritemSpacing * (numberOfCellsPerRow - 1))
-        let height = (collectionView.bounds.height - offset) / numberOfCellsPerRow
+        let numberOfVisibleCells = 6.0
+        let offset = flowLayout.sectionInset.top + abs(flowLayout.sectionInset.bottom) + (flowLayout.minimumInteritemSpacing * (numberOfVisibleCells - 1))
+        let height = (collectionView.bounds.height - offset) / numberOfVisibleCells
         return CGSize(width: collectionView.bounds.width, height: height)
     }
 }

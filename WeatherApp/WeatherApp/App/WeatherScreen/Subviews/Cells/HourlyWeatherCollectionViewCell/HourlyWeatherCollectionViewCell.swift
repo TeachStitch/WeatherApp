@@ -7,17 +7,24 @@
 
 import UIKit
 
+protocol HourlyWeatherCollectionViewCellConfigurable {
+    var date: Date { get }
+    var temperature: Double { get }
+    var weatherIconName: String { get }
+}
+
 class HourlyWeatherCollectionViewCell: UICollectionViewCell {
+    
+    private var models = [HourlyWeatherCollectionViewCellConfigurable]()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-//        layout.se
+        layout.minimumLineSpacing = .zero
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(SecondaryHourlyWeatherCollectionViewCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.isPagingEnabled = true
         collectionView.backgroundColor = .Assets.blue02
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +44,11 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         setUpAutoLayoutConstraints()
     }
     
+    func configure(with models: [HourlyWeatherCollectionViewCellConfigurable]) {
+        self.models = models
+//        collectionView.reloadData()
+    }
+    
     private func setUpSubviews() {
         contentView.addSubview(collectionView)
     }
@@ -54,11 +66,12 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
 extension HourlyWeatherCollectionViewCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 24
+        return models.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell: SecondaryHourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+        cell.configure(with: models[indexPath.item])
         
         return cell
     }
@@ -68,10 +81,10 @@ extension HourlyWeatherCollectionViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else { return CGSize(width: 1, height: 1) }
         
-        let numberOfCellsPerRow = 4.0
-        let offset = flowLayout.sectionInset.left + abs(flowLayout.sectionInset.right) + (flowLayout.minimumInteritemSpacing * (numberOfCellsPerRow - 1))
+        let numberOfVisibleCells = 4.0
+        let offset = flowLayout.sectionInset.left + abs(flowLayout.sectionInset.right) + (flowLayout.minimumInteritemSpacing * (numberOfVisibleCells - 1))
         
-        let width = (collectionView.bounds.width - offset) / numberOfCellsPerRow
+        let width = (collectionView.bounds.width - offset) / numberOfVisibleCells
         return CGSize(width: width, height: collectionView.bounds.height)
     }
 }
