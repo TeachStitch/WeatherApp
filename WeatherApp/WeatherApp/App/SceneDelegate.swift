@@ -11,13 +11,16 @@ import Swinject
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    private(set) var assembler = Assembler([ModelAssembly(), ViewModelAssembly(), ViewControllerAssembly(), ServiceAssembly()])
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
-        let appViewController = ViewController()
-        let navigationController = UINavigationController(rootViewController: appViewController)
+        guard
+            let windowScene = (scene as? UIWindowScene),
+            let weatherViewController = assembler.resolver.resolve(WeatherViewController.self)
+        else { return }
         
+        let window = UIWindow(windowScene: windowScene)
+        let navigationController = UINavigationController(rootViewController: weatherViewController)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         self.window = window
@@ -36,5 +39,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+    }
+    
+    private func requestLocation() {
+        let test = assembler.resolver.resolve(LocationServiceContenxt.self)
+        test?.requestLocation()
     }
 }

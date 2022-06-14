@@ -9,6 +9,7 @@ import Swinject
 
 class ModelAssembly: Assembly {
     func assemble(container: Container) {
-        
+        container.register(WeatherModelProvider.self) { _ in WeatherModel() }
+            .inObjectScope(.transient)
     }
 }
