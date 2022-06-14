@@ -27,14 +27,14 @@ class WeatherViewController: UIViewController {
     
     private lazy var locationBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Test123", style: .plain, target: self, action: #selector(locationButtonTapped))
-        button.tintColor = .Assets.white
+        button.tintColor = .Assets.text
         
         return button
     }()
     
     private lazy var mapBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped))
-        button.tintColor = .Assets.white
+        button.tintColor = .Assets.text
         
         return button
     }()
@@ -43,8 +43,12 @@ class WeatherViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 //        collectionView.setCollectionViewLayout(UICollectionViewFlowLayout(), animated: false)
         collectionView.register(MainInfoCollectionViewCell.self)
+        collectionView.register(HourlyWeatherCollectionViewCell.self)
+        collectionView.backgroundColor = .Assets.blue01
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isScrollEnabled = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         return collectionView
@@ -68,7 +72,7 @@ class WeatherViewController: UIViewController {
     }
     
     private func setUpSubviews() {
-        view.backgroundColor = .Assets.blured
+        view.backgroundColor = .Assets.blue01
         view.addSubview(listView)
     }
     
@@ -112,25 +116,26 @@ extension WeatherViewController: WeatherViewModelDelegate {
 
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
-        
-//        cell.backgroundColor = .brown
         
         // MARK: Provide layout and cell classes
-//        switch CellType(rawValue: indexPath.item) {
-//        case .mainInfo:
-//            break
-//        case .hourlyWeather:
-//            break
-//        default:
-//            break
-//        }
-        
-        return cell
+        switch CellType(rawValue: indexPath.item) {
+        case .mainInfo:
+            guard let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+            
+            return cell
+        case .hourlyWeather:
+            guard let cell: HourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+            
+            return cell
+        default:
+            guard let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+            
+            return cell
+        }
     }
 }
 

@@ -14,8 +14,8 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
         static let mainStackViewSpacing = 15.0
         
         enum Layout {
-            static let dateLabelEndgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 15, right: 8)
-            static let mainStackViewBottomIndent = 8.0
+            static let dateLabelEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 15, right: 8)
+            static let mainStackViewEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 8, right: 15)
             static let weatherStateImageViewHeight = 60.0
             static let infoLabelHeight = 20.0
         }
@@ -23,7 +23,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.white
+        label.textColor = .Assets.text
         label.text = "Mon, 20 July"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,8 +40,8 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.white
-        label.textAlignment = .center
+        label.textColor = .Assets.text
+//        label.textAlignment = .center
         label.text = "27"
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -50,8 +50,8 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var humidityLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.white
-        label.textAlignment = .center
+        label.textColor = .Assets.text
+//        label.textAlignment = .center
         label.text = "57%"
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -60,8 +60,8 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var windSpeedLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.white
-        label.textAlignment = .center
+        label.textColor = .Assets.text
+//        label.textAlignment = .center
         label.text = "27 mps"
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -88,8 +88,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             weatherInfoStackView
         ])
         stackView.axis = .horizontal
-//        stackView.distribution = .equalSpacing
-        stackView.contentMode = .center
+        stackView.distribution = .fill
         stackView.spacing = Constants.mainStackViewSpacing
 //        stackView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,16 +113,15 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     }
     
     private func setUpSubviews() {
-        backgroundColor = .black
         contentView.addSubview(dateLabel)
         contentView.addSubview(mainStackView)
     }
     
     private func setUpAutoLayoutConstraints() {
         NSLayoutConstraint.activate([
-            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.dateLabelEndgeInsets.left),
-            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Layout.dateLabelEndgeInsets.top),
-            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.dateLabelEndgeInsets.right),
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.dateLabelEdgeInsets.left),
+            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Layout.dateLabelEdgeInsets.top),
+            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.dateLabelEdgeInsets.right),
             
             weatherStateImageView.widthAnchor.constraint(equalToConstant: Constants.Layout.weatherStateImageViewHeight),
             
@@ -131,9 +129,9 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             humidityLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
             windSpeedLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
             
-            mainStackView.leadingAnchor.constraint(equalTo: dateLabel.leadingAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: dateLabel.trailingAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.mainStackViewBottomIndent)
+            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
+            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.right),
+            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.bottom)
         ])
     }
     
