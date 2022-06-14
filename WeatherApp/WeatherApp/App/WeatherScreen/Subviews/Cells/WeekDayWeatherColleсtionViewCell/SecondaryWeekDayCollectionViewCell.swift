@@ -1,5 +1,5 @@
 //
-//  SecondaryHourlyWeatherCollectionViewCell.swift
+//  SecondaryWeekDayCollectionViewCell.swift
 //  WeatherApp
 //
 //  Created by Arsenii Kovalenko on 14.06.2022.
@@ -7,22 +7,29 @@
 
 import UIKit
 
-class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
+class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
     
     private enum Constants {
-        static let stackViewSpacing = 5.0
-        static let timeLabelCustomSpacing = 10.0
+        static let stackViewSpacing = 45.0
         
         enum Layout {
-            static let stackViewEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-            static let timeLabelHeight = 25.0
+            static let stackViewEdgeInsets = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
         }
     }
     
-    private lazy var timeLabel: UILabel = {
+    private lazy var weekdayLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.text
-        label.text = "10:00"
+        label.textColor = .black
+        label.text = "Mon"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    private lazy var temperatureLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.text = "27/19"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -30,33 +37,22 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private lazy var weatherStateImageView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(systemName: "star")
-        imageView.contentMode = .left
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
     }()
     
-    private lazy var temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .Assets.text
-        label.text = "18"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
-    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            timeLabel,
-            weatherStateImageView,
-            temperatureLabel
+            weekdayLabel,
+            temperatureLabel,
+            weatherStateImageView
         ])
-        stackView.axis = .vertical
+        stackView.axis = .horizontal
+        stackView.distribution = .equalCentering
         stackView.spacing = Constants.stackViewSpacing
-        stackView.setCustomSpacing(Constants.timeLabelCustomSpacing, after: timeLabel)
-        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
@@ -83,12 +79,7 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.stackViewEdgeInsets.left),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Layout.stackViewEdgeInsets.top),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.stackViewEdgeInsets.right),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.stackViewEdgeInsets.bottom),
-            
-            timeLabel.heightAnchor.constraint(equalToConstant: Constants.Layout.timeLabelHeight),
-            weatherStateImageView.heightAnchor.constraint(equalTo: timeLabel.heightAnchor),
-//            timeLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.Layout.timeLabelHeight),
-//            temperatureLabel.heightAnchor.constraint(equalTo: timeLabel.heightAnchor)
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.stackViewEdgeInsets.bottom)
         ])
     }
 }

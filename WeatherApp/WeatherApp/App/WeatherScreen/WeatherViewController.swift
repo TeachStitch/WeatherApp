@@ -41,13 +41,12 @@ class WeatherViewController: UIViewController {
     
     private lazy var listView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-//        collectionView.setCollectionViewLayout(UICollectionViewFlowLayout(), animated: false)
         collectionView.register(MainInfoCollectionViewCell.self)
         collectionView.register(HourlyWeatherCollectionViewCell.self)
+        collectionView.register(WeekDayWeatherCollectionViewCell.self)
         collectionView.backgroundColor = .Assets.blue01
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.showsHorizontalScrollIndicator = false
         collectionView.isScrollEnabled = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -116,12 +115,10 @@ extension WeatherViewController: WeatherViewModelDelegate {
 
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return CellType.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // MARK: Provide layout and cell classes
         switch CellType(rawValue: indexPath.item) {
         case .mainInfo:
             guard let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
@@ -131,18 +128,35 @@ extension WeatherViewController: UICollectionViewDataSource {
             guard let cell: HourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
             
             return cell
-        default:
-            guard let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
+        case .dailyWeather:
+            guard let cell: WeekDayWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
             
             return cell
+        case .none:
+            return UICollectionViewCell()
         }
     }
 }
 
 extension WeatherViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else { return CGSize(width: 1, height: 1) }
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else { return CGSize(width: 1, height: 1) }
         
-        return CGSize(width: collectionView.bounds.width, height: 100)
+        let numberOfCellsPerRow = 3.0
+        let offset = flowLayout.sectionInset.top + abs(flowLayout.sectionInset.bottom) + (flowLayout.minimumInteritemSpacing * (numberOfCellsPerRow - 1))
+        let mainInfoCellHeight = (collectionView.bounds.height - offset) / numberOfCellsPerRow
+        let hourlyWeatherCellHeight = (collectionView.bounds.height - mainInfoCellHeight) * 0.3
+        let dailyWeatherCellHeight = collectionView.bounds.height - mainInfoCellHeight - hourlyWeatherCellHeight
+        
+        switch CellType(rawValue: indexPath.item) {
+        case .mainInfo:
+            return CGSize(width: collectionView.bounds.width, height: mainInfoCellHeight)
+        case .hourlyWeather:
+            return CGSize(width: collectionView.bounds.width, height: hourlyWeatherCellHeight)
+        case .dailyWeather:
+            return CGSize(width: collectionView.bounds.width, height: dailyWeatherCellHeight)
+        case .none:
+            return CGSize(width: 1, height: 1)
+        }
     }
 }

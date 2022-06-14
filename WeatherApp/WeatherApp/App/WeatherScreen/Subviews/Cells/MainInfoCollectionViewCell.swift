@@ -41,7 +41,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-//        label.textAlignment = .center
         label.text = "27"
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -51,7 +50,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var humidityLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-//        label.textAlignment = .center
         label.text = "57%"
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -61,7 +59,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     private lazy var windSpeedLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-//        label.textAlignment = .center
         label.text = "27 mps"
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -90,7 +87,6 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.spacing = Constants.mainStackViewSpacing
-//        stackView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
