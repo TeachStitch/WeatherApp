@@ -208,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				AAF81725285392D10075A631 /* Info.plist */,
+				AA8D1F272858F2EB007B73C9 /* MockData.swift */,
 				AAF8172B2853930D0075A631 /* App */,
 				AA30753628572D6B002D88E3 /* Assemblies */,
 				AA30753528572D4F002D88E3 /* Services */,
@@ -224,7 +225,6 @@
 				AAF81717285392CF0075A631 /* AppDelegate.swift */,
 				AAF81719285392CF0075A631 /* SceneDelegate.swift */,
 				AA30753D28572EBD002D88E3 /* WeatherScreen */,
-				AA8D1F272858F2EB007B73C9 /* MockData.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
