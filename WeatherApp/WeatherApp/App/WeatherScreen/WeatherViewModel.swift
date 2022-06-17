@@ -16,13 +16,13 @@ protocol WeatherViewModelProvider: AnyObject {
 protocol WeatherViewModelDelegate: AnyObject {
     func presentAlert(title: String, message: String)
     func pushViewController(_ viewController: UIViewController)
-    func updateCell(_ type: WeatherViewController.CellType)
+    func updateCell(_ type: WeatherViewController.SectionKind)
 }
 
 class WeatherViewModel: WeatherViewModelProvider {
     
-    private let model: WeatherModelProvider?
     weak var delegate: WeatherViewModelDelegate?
+    private let model: WeatherModelProvider?
     
     init(model: WeatherModelProvider?) {
         self.model = model
@@ -39,4 +39,9 @@ class WeatherViewModel: WeatherViewModelProvider {
     func mapTapped() {
         
     }
+}
+
+struct Section: Hashable {
+    let kind: WeatherViewController.SectionKind
+    var items: [AnyHashable]
 }

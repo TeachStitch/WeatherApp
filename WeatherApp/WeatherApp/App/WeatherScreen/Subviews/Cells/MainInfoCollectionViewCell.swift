@@ -131,7 +131,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
             mainStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
-            mainStackView.heightAnchor.constraint(equalToConstant: 130),
+//            mainStackView.heightAnchor.constraint(equalToConstant: 130),
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.right),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.bottom)
         ])

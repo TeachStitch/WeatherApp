@@ -16,10 +16,8 @@
 		AA30753C28572EAA002D88E3 /* ViewControllerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA30753B28572EAA002D88E3 /* ViewControllerAssembly.swift */; };
 		AA30753F28572EF3002D88E3 /* NSObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA30753E28572EF3002D88E3 /* NSObject+Extensions.swift */; };
 		AA30754128572F3D002D88E3 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA30754028572F3D002D88E3 /* UIColor+Extensions.swift */; };
-		AA4E575028587C55004C39F0 /* HourlyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E574F28587C55004C39F0 /* HourlyWeatherCollectionViewCell.swift */; };
-		AA4E575328587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575228587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift */; };
-		AA4E575628588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575528588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift */; };
-		AA4E575828589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575728589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift */; };
+		AA4E575328587DB9004C39F0 /* HourlyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575228587DB9004C39F0 /* HourlyWeatherCollectionViewCell.swift */; };
+		AA4E575828589034004C39F0 /* WeekDayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E575728589034004C39F0 /* WeekDayCollectionViewCell.swift */; };
 		AA8D1F282858F2EB007B73C9 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8D1F272858F2EB007B73C9 /* MockData.swift */; };
 		AAA8919B2857B185002E6D9A /* MainInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA8919A2857B185002E6D9A /* MainInfoCollectionViewCell.swift */; };
 		AAA8919D2857BAAD002E6D9A /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA8919C2857BAAD002E6D9A /* UICollectionView+Extensions.swift */; };
@@ -45,10 +43,8 @@
 		AA30753B28572EAA002D88E3 /* ViewControllerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerAssembly.swift; sourceTree = "<group>"; };
 		AA30753E28572EF3002D88E3 /* NSObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Extensions.swift"; sourceTree = "<group>"; };
 		AA30754028572F3D002D88E3 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
-		AA4E574F28587C55004C39F0 /* HourlyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
-		AA4E575228587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryHourlyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
-		AA4E575528588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
-		AA4E575728589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryWeekDayCollectionViewCell.swift; sourceTree = "<group>"; };
+		AA4E575228587DB9004C39F0 /* HourlyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
+		AA4E575728589034004C39F0 /* WeekDayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCollectionViewCell.swift; sourceTree = "<group>"; };
 		AA8D1F272858F2EB007B73C9 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		AAA8919A2857B185002E6D9A /* MainInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		AAA8919C2857BAAD002E6D9A /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
@@ -144,24 +140,6 @@
 			path = WeatherScreen;
 			sourceTree = "<group>";
 		};
-		AA4E575128587D88004C39F0 /* HourlyWeatherCollectionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				AA4E574F28587C55004C39F0 /* HourlyWeatherCollectionViewCell.swift */,
-				AA4E575228587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift */,
-			);
-			path = HourlyWeatherCollectionViewCell;
-			sourceTree = "<group>";
-		};
-		AA4E575428588C87004C39F0 /* WeekDayWeatherColleсtionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				AA4E575528588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift */,
-				AA4E575728589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift */,
-			);
-			path = "WeekDayWeatherColleсtionViewCell";
-			sourceTree = "<group>";
-		};
 		AA8D1F262858F2BF007B73C9 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,8 +151,8 @@
 			isa = PBXGroup;
 			children = (
 				AAA8919A2857B185002E6D9A /* MainInfoCollectionViewCell.swift */,
-				AA4E575428588C87004C39F0 /* WeekDayWeatherColleсtionViewCell */,
-				AA4E575128587D88004C39F0 /* HourlyWeatherCollectionViewCell */,
+				AA4E575728589034004C39F0 /* WeekDayCollectionViewCell.swift */,
+				AA4E575228587DB9004C39F0 /* HourlyWeatherCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -371,12 +349,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA4E575028587C55004C39F0 /* HourlyWeatherCollectionViewCell.swift in Sources */,
 				AA30753A28572E9A002D88E3 /* ServiceAssembly.swift in Sources */,
 				AAF8171C285392CF0075A631 /* WeatherViewController.swift in Sources */,
 				AAA8919D2857BAAD002E6D9A /* UICollectionView+Extensions.swift in Sources */,
 				AAA8919F2857BB2F002E6D9A /* UITableView+Extensions.swift in Sources */,
-				AA4E575828589034004C39F0 /* SecondaryWeekDayCollectionViewCell.swift in Sources */,
+				AA4E575828589034004C39F0 /* WeekDayCollectionViewCell.swift in Sources */,
 				AAB39E642857A02E0096BEA9 /* ViewModelAssembly.swift in Sources */,
 				AA30753F28572EF3002D88E3 /* NSObject+Extensions.swift in Sources */,
 				AAA8919B2857B185002E6D9A /* MainInfoCollectionViewCell.swift in Sources */,
@@ -385,10 +362,9 @@
 				AA30753C28572EAA002D88E3 /* ViewControllerAssembly.swift in Sources */,
 				AA26F4A62857694B006A8FED /* WeatherViewModel.swift in Sources */,
 				AAF81718285392CF0075A631 /* AppDelegate.swift in Sources */,
-				AA4E575328587DB9004C39F0 /* SecondaryHourlyWeatherCollectionViewCell.swift in Sources */,
+				AA4E575328587DB9004C39F0 /* HourlyWeatherCollectionViewCell.swift in Sources */,
 				AAF8171A285392CF0075A631 /* SceneDelegate.swift in Sources */,
 				AA26F4A4285760B8006A8FED /* LocationService.swift in Sources */,
-				AA4E575628588CA1004C39F0 /* WeekDayWeatherCollectionViewCell.swift in Sources */,
 				AAF6C897285777E1007FA5DA /* WeatherModel.swift in Sources */,
 				AA8D1F282858F2EB007B73C9 /* MockData.swift in Sources */,
 				AA30753828572DBE002D88E3 /* ModelAssembly.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  SecondaryWeekDayCollectionViewCell.swift
+//  WeekDayCollectionViewCell.swift
 //  WeatherApp
 //
 //  Created by Arsenii Kovalenko on 14.06.2022.
@@ -7,13 +7,26 @@
 
 import UIKit
 
-class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
+protocol WeekDayWeatherCollectionViewCellConfigurable {
+    var date: Date { get }
+    var currentTemperature: Double { get }
+    var averageTemperature: Double { get }
+    var weatherIconName: String { get }
+}
+
+class WeekDayCollectionViewCell: UICollectionViewCell {
     
     private enum Constants {
         static let stackViewSpacing = 45.0
         
         enum Layout {
             static let stackViewEdgeInsets = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            updateSelection()
         }
     }
     
@@ -37,6 +50,7 @@ class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .black
         
         return imageView
     }()
@@ -78,6 +92,7 @@ class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
     
     private func setUpSubviews() {
         contentView.addSubview(stackView)
+        backgroundColor = .systemBackground
     }
     
     private func setUpAutoLayoutConstraints() {
@@ -87,5 +102,17 @@ class SecondaryWeekDayCollectionViewCell: UICollectionViewCell {
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.stackViewEdgeInsets.right),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.stackViewEdgeInsets.bottom)
         ])
+    }
+    
+    private func updateSelection() {
+        if isSelected {
+            weekdayLabel.textColor = .systemBlue
+            temperatureLabel.textColor = .systemBlue
+            weatherStateImageView.tintColor = .systemBlue
+        } else {
+            weekdayLabel.textColor = .black
+            temperatureLabel.textColor = .black
+            weatherStateImageView.tintColor = .black
+        }
     }
 }

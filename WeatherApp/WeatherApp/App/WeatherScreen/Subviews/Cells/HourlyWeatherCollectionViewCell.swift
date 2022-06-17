@@ -1,5 +1,5 @@
 //
-//  SecondaryHourlyWeatherCollectionViewCell.swift
+//  HourlyWeatherCollectionViewCell.swift
 //  WeatherApp
 //
 //  Created by Arsenii Kovalenko on 14.06.2022.
@@ -7,7 +7,13 @@
 
 import UIKit
 
-class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
+protocol HourlyWeatherCollectionViewCellConfigurable {
+    var date: Date { get }
+    var temperature: Double { get }
+    var weatherIconName: String { get }
+}
+
+class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private enum Constants {
         static let stackViewSpacing = 5.0
@@ -81,6 +87,7 @@ class SecondaryHourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private func setUpSubviews() {
         contentView.addSubview(stackView)
+        backgroundColor = .Assets.blue02
     }
     
     private func setUpAutoLayoutConstraints() {
