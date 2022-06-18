@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController {
 
@@ -37,7 +38,7 @@ class WeatherViewController: UIViewController {
     private let viewModel: WeatherViewModelProvider?
     
     private lazy var locationBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "Test123", style: .plain, target: self, action: #selector(locationButtonTapped))
+        let button = UIBarButtonItem(title: Constants.locationBarButtonText, style: .plain, target: self, action: #selector(locationButtonTapped))
 //        button.tintColor = .Assets.text
         
         return button
@@ -73,12 +74,27 @@ class WeatherViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let ns = NetworkService()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpSubviews()
         setUpNavigationBar()
         setUpAutoLayoutConstraints()
         viewModel?.onLoad()
+        
+        let coordinates = CLLocationCoordinate2D(latitude: 35, longitude: 139)
+        ns.getCurrentWeather(coordinates: coordinates) { result in
+            switch result {
+            case .success(let item):
+                print(item.cityName)
+                print(item.info)
+                print(item.weather)
+                print(item.wind)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     private func setUpSubviews() {
@@ -166,7 +182,7 @@ class WeatherViewController: UIViewController {
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
-        let section = NSCollectionLayoutSection(group: group)        
+        let section = NSCollectionLayoutSection(group: group)
         return section
     }
 
