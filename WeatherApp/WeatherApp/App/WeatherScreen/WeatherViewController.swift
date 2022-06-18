@@ -74,7 +74,7 @@ class WeatherViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let ns = NetworkService()
+    let sut = LocationService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,18 +83,8 @@ class WeatherViewController: UIViewController {
         setUpAutoLayoutConstraints()
         viewModel?.onLoad()
         
-        let coordinates = CLLocationCoordinate2D(latitude: 35, longitude: 139)
-        ns.getCurrentWeather(coordinates: coordinates) { result in
-            switch result {
-            case .success(let item):
-                print(item.cityName)
-                print(item.info)
-                print(item.weather)
-                print(item.wind)
-            case .failure(let error):
-                print(error)
-            }
-        }
+        sut.requestLocation()
+    
     }
     
     private func setUpSubviews() {
@@ -208,16 +198,8 @@ extension WeatherViewController: WeatherViewModelDelegate {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func updateCell(_ type: SectionKind) {
-        let indexPath = IndexPath(item: type.rawValue, section: .zero)
-        switch type {
-        case .mainInfo:
-            collectionView.reconfigureItems(at: [indexPath])
-        case .hourlyWeather:
-            collectionView.reconfigureItems(at: [indexPath])
-        case .dailyWeather:
-            collectionView.reconfigureItems(at: [indexPath])
-        }
+    func updateView() {
+        collectionView.reloadData()
     }
 }
 

@@ -8,6 +8,7 @@
 import UIKit
 
 protocol WeatherViewModelProvider: AnyObject {
+    var hourlyWeatherModel: HourlyWeatherModel? { get }
     func onLoad()
     func locationTapped()
     func mapTapped()
@@ -16,10 +17,16 @@ protocol WeatherViewModelProvider: AnyObject {
 protocol WeatherViewModelDelegate: AnyObject {
     func presentAlert(title: String, message: String)
     func pushViewController(_ viewController: UIViewController)
-    func updateCell(_ type: WeatherViewController.SectionKind)
+    func updateView()
 }
 
 class WeatherViewModel: WeatherViewModelProvider {
+    
+    var hourlyWeatherModel: HourlyWeatherModel? {
+        didSet {
+            delegate?.updateView()
+        }
+    }
     
     weak var delegate: WeatherViewModelDelegate?
     private let model: WeatherModelProvider?

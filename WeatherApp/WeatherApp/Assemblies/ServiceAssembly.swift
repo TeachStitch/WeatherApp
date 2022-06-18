@@ -11,5 +11,8 @@ class ServiceAssembly: Assembly {
     func assemble(container: Container) {
         container.register(LocationServiceContenxt.self) { _ in LocationService() }
             .inObjectScope(.container)
+        
+        container.register(NetworkServiceContext.self) { _ in NetworkService() }
+            .inObjectScope(.container)
     }
 }

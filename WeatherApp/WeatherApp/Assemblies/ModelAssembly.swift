@@ -9,7 +9,12 @@ import Swinject
 
 class ModelAssembly: Assembly {
     func assemble(container: Container) {
-        container.register(WeatherModelProvider.self) { _ in WeatherModel() }
-            .inObjectScope(.transient)
+        container.register(WeatherModelProvider.self) { resolver in
+            WeatherModel(
+                networkService: resolver.resolve(NetworkServiceContext.self),
+                locationSevice: resolver.resolve(LocationServiceContenxt.self)
+            )
+        }
+        .inObjectScope(.transient)
     }
 }

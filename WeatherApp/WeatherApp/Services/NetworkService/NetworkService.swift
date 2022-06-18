@@ -12,9 +12,10 @@ typealias ServiceCompletion<T: Decodable> = (_ result: Result<T, ServiceError>) 
 
 protocol NetworkServiceContext {
     func getCurrentWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<CurrentWeatherModel>)
+    func getHourlyWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<HourlyWeatherModel>)
 }
 
-class NetworkService {
+class NetworkService: NetworkServiceContext {
     static let APIKEY = "81217fe46215428e9346fa56bbc45f5f"
     
     private let decoder = JSONDecoder()
@@ -51,6 +52,7 @@ class NetworkService {
                         let responseModel = try self.decoder.decode(T.self, from: data)
                         completion(.success(responseModel))
                     } catch let error {
+                        print(error)
                         completion(.failure(.failedDecodingResponse(error
                             .localizedDescription)))
                     }
@@ -70,6 +72,17 @@ class NetworkService {
     
     func getCurrentWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<CurrentWeatherModel>) {
         let path = "/data/2.5/weather"
+        let queryItems: [String: LosslessStringConvertible] = [
+            "lat": coordinates.latitude,
+            "lon": coordinates.longitude,
+            "units": "metric"
+        ]
+        let router = Router(path: path, queryItems: queryItems)
+        execute(router, completion: completion)
+    }
+    
+    func getHourlyWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<HourlyWeatherModel>) {
+        let path = "/data/2.5/forecast"
         let queryItems: [String: LosslessStringConvertible] = [
             "lat": coordinates.latitude,
             "lon": coordinates.longitude,
