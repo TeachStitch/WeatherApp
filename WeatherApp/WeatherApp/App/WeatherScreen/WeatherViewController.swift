@@ -53,6 +53,7 @@ class WeatherViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Test")
         collectionView.register(MainInfoCollectionViewCell.self)
         collectionView.register(HourlyWeatherCollectionViewCell.self)
         collectionView.register(WeekDayCollectionViewCell.self)
@@ -73,18 +74,25 @@ class WeatherViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    let sut = LocationService()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpSubviews()
         setUpNavigationBar()
         setUpAutoLayoutConstraints()
+        viewModel?.hourlyWeatherModel.bind { [weak self] model in
+            DispatchQueue.main.async {
+                self?.locationBarButtonItem.title = model?.cityName
+                self?.collectionView.reloadData()
+            }
+        }
+        
         viewModel?.onLoad()
         
-        sut.requestLocation()
-    
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            print(self.viewModel?.hourlyWeatherModel?.cityName)
+//            print(self.viewModel?.hourlyWeatherModel?.hourlyForecasts.first?.date)
+//        }
     }
     
     private func setUpSubviews() {
@@ -199,13 +207,23 @@ extension WeatherViewController: WeatherViewModelDelegate {
     }
     
     func updateView() {
+        locationBarButtonItem.title = viewModel?.hourlyWeatherModel.value?.cityName
         collectionView.reloadData()
     }
 }
 
 extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return SectionKind(rawValue: section)?.itemCount ?? .zero
+        switch SectionKind(rawValue: section) {
+        case .mainInfo:
+            return 1
+        case .hourlyWeather:
+            return viewModel?.hourlyWeatherModel.value?.hourlyForecasts.count ?? 0
+        case .dailyWeather:
+            return viewModel?.hourlyWeatherModel.value?.hourlyForecasts.count ?? 0
+        case .none:
+            return 0
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -215,22 +233,33 @@ extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch SectionKind(rawValue: indexPath.section) {
         case .mainInfo:
-            guard let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
-
-            // MOCK
-            cell.configure(with: mainInfoModel)
+            guard
+                let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath),
+                let models = viewModel?.hourlyWeatherModel.value?.hourlyForecasts as? [ExtendedWeatherInfoConfiguration]
+            else {
+                return collectionView.dequeueReusableCell(withReuseIdentifier: MainInfoCollectionViewCell.identifier, for: indexPath)
+            }
+            cell.configure(with: models[indexPath.item])
 
             return cell
         case .hourlyWeather:
-            guard let cell: HourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
-            // MOCK
-            cell.configure(with: hourlyModels[indexPath.item])
+            guard
+                let cell: HourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath),
+                let models = viewModel?.hourlyWeatherModel.value?.hourlyForecasts as? [BaseWeatherInfoConfiguration]
+            else {
+                return collectionView.dequeueReusableCell(withReuseIdentifier: HourlyWeatherCollectionViewCell.identifier, for: indexPath)
+            }
+            cell.configure(with: models[indexPath.item])
 
             return cell
         case .dailyWeather:
-            guard let cell: WeekDayCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath) else { return UICollectionViewCell() }
-            // MOCK
-            cell.configure(with: weekModels[indexPath.item])
+            guard
+                let cell: WeekDayCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath),
+                let models = viewModel?.hourlyWeatherModel.value?.hourlyForecasts as? [ExtendedWeatherInfoConfiguration]
+            else {
+                return collectionView.dequeueReusableCell(withReuseIdentifier: HourlyWeatherCollectionViewCell.identifier, for: indexPath)
+            }
+            cell.configure(with: models[indexPath.item])
 
             return cell
         case .none:

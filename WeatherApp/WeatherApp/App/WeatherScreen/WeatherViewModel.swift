@@ -8,7 +8,7 @@
 import UIKit
 
 protocol WeatherViewModelProvider: AnyObject {
-    var hourlyWeatherModel: HourlyWeatherModel? { get }
+    var hourlyWeatherModel: Observable<HourlyWeatherMappedModel> { get }
     func onLoad()
     func locationTapped()
     func mapTapped()
@@ -22,11 +22,7 @@ protocol WeatherViewModelDelegate: AnyObject {
 
 class WeatherViewModel: WeatherViewModelProvider {
     
-    var hourlyWeatherModel: HourlyWeatherModel? {
-        didSet {
-            delegate?.updateView()
-        }
-    }
+    var hourlyWeatherModel: Observable<HourlyWeatherMappedModel> = Observable(nil)
     
     weak var delegate: WeatherViewModelDelegate?
     private let model: WeatherModelProvider?
@@ -36,19 +32,52 @@ class WeatherViewModel: WeatherViewModelProvider {
     }
     
     func onLoad() {
-        print(#function)
+        model?.getHourlyWeather { result in
+            switch result {
+            case .success(let hourlyWeather):
+                self.hourlyWeatherModel.value = hourlyWeather
+            case .failure(let error):
+                self.handleError(error)
+            }
+        }
     }
     
     func locationTapped() {
-        
+        print(#function)
     }
     
     func mapTapped() {
-        
+        print(#function)
+    }
+    
+    private func handleError(_ error: Error) {
+        print(error)
     }
 }
 
 struct Section: Hashable {
     let kind: WeatherViewController.SectionKind
     var items: [AnyHashable]
+}
+
+final class Observable<T> {
+    
+    var value: T? {
+        didSet {
+            listeners.forEach {
+                $0(value)
+            }
+        }
+    }
+    
+    private var listeners: [((T?) -> Void)] = []
+    
+    init(_ value: T?) {
+        self.value = value
+    }
+    
+    func bind(_ listener: @escaping (T?) -> Void) {
+        listener(value)
+        self.listeners.append(listener)
+    }
 }

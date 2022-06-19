@@ -7,14 +7,6 @@
 
 import UIKit
 
-protocol MainInfoCollectionViewCellConfigurable {
-    var date: Date { get }
-    var weatherIconName: String { get }
-    var temperature: Double { get }
-    var humidity: Double { get }
-    var windSpeed: Double { get }
-}
-
 class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private enum Constants {
@@ -25,7 +17,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             static let dateLabelEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 15, right: 8)
             static let mainStackViewEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 8, right: 15)
             static let weatherStateImageViewHeight = 60.0
-            static let infoLabelHeight = 20.0
+            static let dateLabelHeight = 30.0
         }
     }
     
@@ -107,9 +99,9 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
         setUpAutoLayoutConstraints()
     }
     
-    func configure(with model: MainInfoCollectionViewCellConfigurable) {
+    func configure(with model: ExtendedWeatherInfoConfiguration) {
         dateLabel.text = model.date.formatted(.dateTime.weekday(.abbreviated).day(.defaultDigits).month(.wide))
-        weatherStateImageView.image = UIImage(systemName: "star")
+        weatherStateImageView.image = UIImage(named: model.iconName)
         temperatureLabel.text = Measurement(value: model.temperature, unit: UnitTemperature.celsius).formatted()
         humidityLabel.text = "\(model.humidity.formatted())%"
         windSpeedLabel.text = Measurement(value: model.windSpeed, unit: UnitSpeed.metersPerSecond).formatted()
@@ -125,13 +117,13 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.dateLabelEdgeInsets.left),
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Layout.dateLabelEdgeInsets.top),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.dateLabelEdgeInsets.right),
+            dateLabel.heightAnchor.constraint(equalToConstant: Constants.Layout.dateLabelHeight),
             
             humidityLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
             windSpeedLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
             
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
             mainStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
-//            mainStackView.heightAnchor.constraint(equalToConstant: 130),
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.right),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Layout.mainStackViewEdgeInsets.bottom)
         ])

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MainInfoModel: MainInfoCollectionViewCellConfigurable {
+struct MainInfoModel {
     let date: Date
     let weatherIconName: String
     let temperature: Double
@@ -17,7 +17,7 @@ struct MainInfoModel: MainInfoCollectionViewCellConfigurable {
 
 let mainInfoModel = MainInfoModel(date: .now, weatherIconName: "test", temperature: 15, humidity: 68, windSpeed: 13.2)
 
-struct HourlyModel: HourlyWeatherCollectionViewCellConfigurable {
+struct HourlyModel {
     let date: Date
     let temperature: Double
     let weatherIconName: String
@@ -32,7 +32,7 @@ let hourlyModels = [
     HourlyModel(date: Date(timeInterval: 3600 * 5, since: .now), temperature: -5, weatherIconName: "test")
 ]
 
-struct WeekModel: WeekDayWeatherCollectionViewCellConfigurable {
+struct WeekModel {
     let date: Date
     let currentTemperature: Double
     let averageTemperature: Double

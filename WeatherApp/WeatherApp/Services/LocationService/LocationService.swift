@@ -9,33 +9,44 @@ import Foundation
 import CoreLocation
 
 protocol LocationServiceContenxt: AnyObject {
-    var mostRecentLocationCoordinates: CLLocationCoordinate2D? { get }
-    func requestLocation()
+    var authorizationStatus: CLAuthorizationStatus { get }
+    func requestAuthorization()
+    func requestLocation(_ completion: @escaping LocationService.CoordinatesComplection)
 }
-// FIXME: Location Service BUG current location
+
 class LocationService: NSObject, LocationServiceContenxt, CLLocationManagerDelegate {
     
-    var mostRecentLocationCoordinates: CLLocationCoordinate2D? {
-        get {
-            return locationManager.location?.coordinate
-        }
-        set {
-            self.mostRecentLocationCoordinates = newValue
-        }
+    typealias CoordinatesComplection = (_ result: Result<CLLocationCoordinate2D, Error>) -> Void
+    
+    var authorizationStatus: CLAuthorizationStatus {
+        locationManager.authorizationStatus
     }
+    
+    private var completion: CoordinatesComplection?
     
     private lazy var locationManager: CLLocationManager = {
         let manager = CLLocationManager()
         manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.delegate = self
         return manager
     }()
     
-    func requestLocation() {
+    func requestLocation(_ completion: @escaping CoordinatesComplection) {
+        self.completion = completion
+        locationManager.requestLocation()
+    }
+    
+    func requestAuthorization() {
         locationManager.requestWhenInUseAuthorization()
-//        locationManager.requestLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        mostRecentLocationCoordinates = locations.last?.coordinate
+        guard let location = manager.location else { return }
+        completion?(.success(location.coordinate))
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        completion?(.failure(error))
     }
 }

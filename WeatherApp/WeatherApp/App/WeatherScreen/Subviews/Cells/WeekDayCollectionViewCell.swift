@@ -7,13 +7,6 @@
 
 import UIKit
 
-protocol WeekDayWeatherCollectionViewCellConfigurable {
-    var date: Date { get }
-    var currentTemperature: Double { get }
-    var averageTemperature: Double { get }
-    var weatherIconName: String { get }
-}
-
 class WeekDayCollectionViewCell: UICollectionViewCell {
     
     private enum Constants {
@@ -81,13 +74,13 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
         setUpAutoLayoutConstraints()
     }
     
-    func configure(with model: WeekDayWeatherCollectionViewCellConfigurable) {
+    func configure(with model: ExtendedWeatherInfoConfiguration) {
         weekdayLabel.text = model.date.formatted(.dateTime.weekday(.abbreviated))
-        weatherStateImageView.image = UIImage(systemName: "star")
+        weatherStateImageView.image = UIImage(named: model.iconName)
         
-        let currentTemperature = Measurement(value: model.currentTemperature, unit: UnitTemperature.celsius).formatted()
-        let averageTemperature = Measurement(value: model.averageTemperature, unit: UnitTemperature.celsius).formatted()
-        temperatureLabel.text = "\(currentTemperature)/\(averageTemperature)"
+        let maxTemperature = Measurement(value: model.maxTemperature, unit: UnitTemperature.celsius).formatted()
+        let minTemperature = Measurement(value: model.minTemperature, unit: UnitTemperature.celsius).formatted()
+        temperatureLabel.text = "\(maxTemperature)/\(minTemperature)"
     }
     
     private func setUpSubviews() {

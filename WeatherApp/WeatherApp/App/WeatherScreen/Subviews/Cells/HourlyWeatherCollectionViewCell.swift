@@ -7,12 +7,6 @@
 
 import UIKit
 
-protocol HourlyWeatherCollectionViewCellConfigurable {
-    var date: Date { get }
-    var temperature: Double { get }
-    var weatherIconName: String { get }
-}
-
 class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private enum Constants {
@@ -29,6 +23,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -36,7 +31,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private lazy var weatherStateImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .left
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
@@ -45,7 +40,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .Assets.text
-        label.text = "18"
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -79,9 +74,9 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         setUpAutoLayoutConstraints()
     }
     
-    func configure(with model: HourlyWeatherCollectionViewCellConfigurable) {
+    func configure(with model: BaseWeatherInfoConfiguration) {
         timeLabel.text = model.date.formatted(.dateTime.hour())
-        weatherStateImageView.image = UIImage(systemName: "star")
+        weatherStateImageView.image = UIImage(named: model.iconName)
         temperatureLabel.text = Measurement(value: model.temperature, unit: UnitTemperature.celsius).formatted()
     }
     

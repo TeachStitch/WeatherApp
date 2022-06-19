@@ -11,8 +11,8 @@ import CoreLocation.CLAvailability
 typealias ServiceCompletion<T: Decodable> = (_ result: Result<T, ServiceError>) -> Void
 
 protocol NetworkServiceContext {
-    func getCurrentWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<CurrentWeatherModel>)
-    func getHourlyWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<HourlyWeatherModel>)
+    func getCurrentWeather(coordinate: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<CurrentWeatherModel>)
+    func getHourlyWeather(coordinate: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<HourlyWeatherModel>)
 }
 
 class NetworkService: NetworkServiceContext {
@@ -70,22 +70,22 @@ class NetworkService: NetworkServiceContext {
         task.resume()
     }
     
-    func getCurrentWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<CurrentWeatherModel>) {
+    func getCurrentWeather(coordinate: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<CurrentWeatherModel>) {
         let path = "/data/2.5/weather"
         let queryItems: [String: LosslessStringConvertible] = [
-            "lat": coordinates.latitude,
-            "lon": coordinates.longitude,
+            "lat": coordinate.latitude,
+            "lon": coordinate.longitude,
             "units": "metric"
         ]
         let router = Router(path: path, queryItems: queryItems)
         execute(router, completion: completion)
     }
     
-    func getHourlyWeather(coordinates: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<HourlyWeatherModel>) {
+    func getHourlyWeather(coordinate: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<HourlyWeatherModel>) {
         let path = "/data/2.5/forecast"
         let queryItems: [String: LosslessStringConvertible] = [
-            "lat": coordinates.latitude,
-            "lon": coordinates.longitude,
+            "lat": coordinate.latitude,
+            "lon": coordinate.longitude,
             "units": "metric"
         ]
         let router = Router(path: path, queryItems: queryItems)

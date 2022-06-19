@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let weatherViewController = assembler.resolver.resolve(WeatherViewController.self)
         else { return }
         
+        requestLocation()
         let window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController(rootViewController: weatherViewController)
         window.rootViewController = navigationController
@@ -42,7 +43,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func requestLocation() {
-        let test = assembler.resolver.resolve(LocationServiceContenxt.self)
-        test?.requestLocation()
+        assembler.resolver.resolve(LocationServiceContenxt.self)?.requestAuthorization()
     }
 }
