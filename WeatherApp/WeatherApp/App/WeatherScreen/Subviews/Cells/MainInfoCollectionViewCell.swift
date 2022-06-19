@@ -23,7 +23,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.text
+        label.textColor = .Assets.white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -38,7 +38,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.text
+        label.textColor = .Assets.white
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -46,7 +46,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var humidityLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.text
+        label.textColor = .Assets.white
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -54,7 +54,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var windSpeedLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.text
+        label.textColor = .Assets.white
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label

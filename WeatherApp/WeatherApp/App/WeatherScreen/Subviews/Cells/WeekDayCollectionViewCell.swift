@@ -25,7 +25,7 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
     
     private lazy var weekdayLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .Assets.black
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -33,7 +33,7 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
     
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .Assets.black
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -43,7 +43,7 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = .black
+        imageView.tintColor = .Assets.black
         
         return imageView
     }()
@@ -103,9 +103,9 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
             temperatureLabel.textColor = .systemBlue
             weatherStateImageView.tintColor = .systemBlue
         } else {
-            weekdayLabel.textColor = .black
-            temperatureLabel.textColor = .black
-            weatherStateImageView.tintColor = .black
+            weekdayLabel.textColor = .Assets.black
+            temperatureLabel.textColor = .Assets.black
+            weatherStateImageView.tintColor = .Assets.black
         }
     }
 }

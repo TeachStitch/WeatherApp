@@ -22,7 +22,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.text
+        label.textColor = .Assets.white
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -39,7 +39,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .Assets.text
+        label.textColor = .Assets.white
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
