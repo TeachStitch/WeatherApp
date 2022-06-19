@@ -12,9 +12,11 @@ class ViewModelAssembly: Assembly {
         container.register(WeatherViewModelProvider.self) { resolver in
             WeatherViewModel(model: resolver.resolve(WeatherModelProvider.self))
         }
-        .initCompleted { resolver, viewModel in
-            let viewModel = viewModel as? WeatherViewModel
-            viewModel?.delegate = resolver.resolve(WeatherViewController.self)
-        }
+        .inObjectScope(.transient)
+//        .initCompleted { resolver, viewModel in
+//            let viewModel = viewModel as? WeatherViewModel
+//            let viewController = resolver.resolve(WeatherViewController.self)
+//            viewModel?.delegate = viewController
+//        }
     }
 }

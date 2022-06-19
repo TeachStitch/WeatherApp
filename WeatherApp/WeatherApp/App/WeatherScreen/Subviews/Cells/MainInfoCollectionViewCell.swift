@@ -67,7 +67,7 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             windSpeedLabel
         ])
         stackView.axis = .vertical
-        stackView.distribution = .fill
+        stackView.distribution = .fillEqually
         stackView.spacing = Constants.weatherInfoStackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -119,8 +119,8 @@ class MainInfoCollectionViewCell: UICollectionViewCell {
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Layout.dateLabelEdgeInsets.right),
             dateLabel.heightAnchor.constraint(equalToConstant: Constants.Layout.dateLabelHeight),
             
-            humidityLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
-            windSpeedLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
+//            humidityLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
+//            windSpeedLabel.heightAnchor.constraint(equalTo: temperatureLabel.heightAnchor),
             
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),
             mainStackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: Constants.Layout.mainStackViewEdgeInsets.left),

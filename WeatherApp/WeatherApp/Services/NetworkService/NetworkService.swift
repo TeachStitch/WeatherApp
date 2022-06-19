@@ -28,6 +28,7 @@ class NetworkService: NetworkServiceContext {
         
         var request = URLRequest(url: url)
         request.httpMethod = route.httpMethod.rawValue
+        request.timeoutInterval = 10
         if let body = route.body {
             do {
                 request.httpBody = try JSONSerialization.data(withJSONObject: body)

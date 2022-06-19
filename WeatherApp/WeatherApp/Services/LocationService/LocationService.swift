@@ -41,9 +41,8 @@ class LocationService: NSObject, LocationServiceContenxt, CLLocationManagerDeleg
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = manager.location else { return }
+        guard let location = locations.last else { return }
         completion?(.success(location.coordinate))
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreLocation
 
 class WeatherViewController: UIViewController {
 
@@ -39,14 +38,14 @@ class WeatherViewController: UIViewController {
     
     private lazy var locationBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(title: Constants.locationBarButtonText, style: .plain, target: self, action: #selector(locationButtonTapped))
-//        button.tintColor = .Assets.text
+        button.tintColor = .Assets.white
         
         return button
     }()
     
     private lazy var mapBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped))
-//        button.tintColor = .Assets.text
+        button.tintColor = .Assets.white
         
         return button
     }()
@@ -80,29 +79,18 @@ class WeatherViewController: UIViewController {
         setUpSubviews()
         setUpNavigationBar()
         setUpAutoLayoutConstraints()
-        viewModel?.hourlyWeatherModel.bind { [weak self] model in
-            DispatchQueue.main.async {
-                self?.locationBarButtonItem.title = model?.cityName
-                self?.collectionView.reloadData()
-            }
-        }
-        
         viewModel?.onLoad()
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//            print(self.viewModel?.hourlyWeatherModel?.cityName)
-//            print(self.viewModel?.hourlyWeatherModel?.hourlyForecasts.first?.date)
-//        }
     }
     
     private func setUpSubviews() {
+        view.backgroundColor = .Assets.blue01
         view.addSubview(collectionView)
     }
     
     private func setUpNavigationBar() {
         navigationItem.setLeftBarButton(locationBarButtonItem, animated: false)
         navigationItem.setRightBarButton(mapBarButtonItem, animated: false)
-//        navigationController?.navigationBar.backgroundColor = UIColor.Assets.blue01
+//        navigationController?.navigationBar.backgroundColor = .Assets.blue01
 //        navigationController?.navigationBar.tintColor = .Assets.blue01
     }
     
@@ -157,7 +145,7 @@ class WeatherViewController: UIViewController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(0.25),
-            heightDimension: .fractionalHeight(0.2)
+            heightDimension: .fractionalHeight(0.4)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
@@ -176,7 +164,7 @@ class WeatherViewController: UIViewController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(60)
+            heightDimension: .fractionalHeight(0.1)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
@@ -196,8 +184,12 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController: WeatherViewModelDelegate {
     func presentAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default)
-        alertController.addAction(action)
+        let dismisAction = UIAlertAction(title: "Ok", style: .default)
+        let retryAction = UIAlertAction(title: "Retry", style: .default) { [weak self] _ in
+            self?.viewModel?.retryFetch()
+        }
+        alertController.addAction(dismisAction)
+        alertController.addAction(retryAction)
         
         present(alertController, animated: true)
     }
@@ -207,7 +199,7 @@ extension WeatherViewController: WeatherViewModelDelegate {
     }
     
     func updateView() {
-        locationBarButtonItem.title = viewModel?.hourlyWeatherModel.value?.cityName
+        locationBarButtonItem.title = viewModel?.hourlyWeatherModel?.cityName
         collectionView.reloadData()
     }
 }
@@ -218,9 +210,9 @@ extension WeatherViewController: UICollectionViewDataSource {
         case .mainInfo:
             return 1
         case .hourlyWeather:
-            return viewModel?.hourlyWeatherModel.value?.hourlyForecasts.count ?? 0
+            return viewModel?.hourlyWeatherModel?.hourlyForecasts.count ?? 0
         case .dailyWeather:
-            return viewModel?.hourlyWeatherModel.value?.hourlyForecasts.count ?? 0
+            return viewModel?.hourlyWeatherModel?.hourlyForecasts.count ?? 0
         case .none:
             return 0
         }
@@ -235,7 +227,7 @@ extension WeatherViewController: UICollectionViewDataSource {
         case .mainInfo:
             guard
                 let cell: MainInfoCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath),
-                let models = viewModel?.hourlyWeatherModel.value?.hourlyForecasts as? [ExtendedWeatherInfoConfiguration]
+                let models = viewModel?.hourlyWeatherModel?.hourlyForecasts as? [ExtendedWeatherInfoConfiguration]
             else {
                 return collectionView.dequeueReusableCell(withReuseIdentifier: MainInfoCollectionViewCell.identifier, for: indexPath)
             }
@@ -245,7 +237,7 @@ extension WeatherViewController: UICollectionViewDataSource {
         case .hourlyWeather:
             guard
                 let cell: HourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath),
-                let models = viewModel?.hourlyWeatherModel.value?.hourlyForecasts as? [BaseWeatherInfoConfiguration]
+                let models = viewModel?.hourlyWeatherModel?.hourlyForecasts as? [BaseWeatherInfoConfiguration]
             else {
                 return collectionView.dequeueReusableCell(withReuseIdentifier: HourlyWeatherCollectionViewCell.identifier, for: indexPath)
             }
@@ -255,7 +247,7 @@ extension WeatherViewController: UICollectionViewDataSource {
         case .dailyWeather:
             guard
                 let cell: WeekDayCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath),
-                let models = viewModel?.hourlyWeatherModel.value?.hourlyForecasts as? [ExtendedWeatherInfoConfiguration]
+                let models = viewModel?.hourlyWeatherModel?.hourlyForecasts as? [ExtendedWeatherInfoConfiguration]
             else {
                 return collectionView.dequeueReusableCell(withReuseIdentifier: HourlyWeatherCollectionViewCell.identifier, for: indexPath)
             }

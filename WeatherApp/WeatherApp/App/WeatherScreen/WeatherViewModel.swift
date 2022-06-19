@@ -8,9 +8,10 @@
 import UIKit
 
 protocol WeatherViewModelProvider: AnyObject {
-    var hourlyWeatherModel: Observable<HourlyWeatherMappedModel> { get }
+    var hourlyWeatherModel: HourlyWeatherMappedModel? { get }
     func onLoad()
     func locationTapped()
+    func retryFetch()
     func mapTapped()
 }
 
@@ -21,8 +22,14 @@ protocol WeatherViewModelDelegate: AnyObject {
 }
 
 class WeatherViewModel: WeatherViewModelProvider {
-    
-    var hourlyWeatherModel: Observable<HourlyWeatherMappedModel> = Observable(nil)
+        
+    var hourlyWeatherModel: HourlyWeatherMappedModel? {
+        didSet {
+            DispatchQueue.main.async {
+                self.delegate?.updateView()
+            }
+        }
+    }
     
     weak var delegate: WeatherViewModelDelegate?
     private let model: WeatherModelProvider?
@@ -32,14 +39,11 @@ class WeatherViewModel: WeatherViewModelProvider {
     }
     
     func onLoad() {
-        model?.getHourlyWeather { result in
-            switch result {
-            case .success(let hourlyWeather):
-                self.hourlyWeatherModel.value = hourlyWeather
-            case .failure(let error):
-                self.handleError(error)
-            }
-        }
+        getHourlyWeather()
+    }
+    
+    func retryFetch() {
+        getHourlyWeather()
     }
     
     func locationTapped() {
@@ -50,34 +54,23 @@ class WeatherViewModel: WeatherViewModelProvider {
         print(#function)
     }
     
+    private func getHourlyWeather() {
+        model?.getHourlyWeather { [weak self] result in
+            switch result {
+            case .success(let hourlyWeather):
+                self?.hourlyWeatherModel = hourlyWeather
+            case .failure(let error):
+                self?.handleError(error)
+            }
+        }
+    }
+    
     private func handleError(_ error: Error) {
-        print(error)
+        delegate?.presentAlert(title: "Error", message: error.localizedDescription)
     }
 }
 
 struct Section: Hashable {
     let kind: WeatherViewController.SectionKind
     var items: [AnyHashable]
-}
-
-final class Observable<T> {
-    
-    var value: T? {
-        didSet {
-            listeners.forEach {
-                $0(value)
-            }
-        }
-    }
-    
-    private var listeners: [((T?) -> Void)] = []
-    
-    init(_ value: T?) {
-        self.value = value
-    }
-    
-    func bind(_ listener: @escaping (T?) -> Void) {
-        listener(value)
-        self.listeners.append(listener)
-    }
 }
