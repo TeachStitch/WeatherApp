@@ -12,3 +12,5 @@ Future plans:
 1. Integrate google service.
 2. Cover app with tests.
 3. Implement map screen.
+
+<img src="https://user-images.githubusercontent.com/89259822/175763511-792c9a11-5056-4000-80fb-94e5c8040381.png" width="250" height="500">
