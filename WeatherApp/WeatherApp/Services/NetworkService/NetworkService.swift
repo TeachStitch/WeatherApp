@@ -18,6 +18,11 @@ protocol NetworkServiceContext {
 class NetworkService: NetworkServiceContext {
     static let APIKEY = "81217fe46215428e9346fa56bbc45f5f"
     
+    private enum Constants {
+        static let basePath = "/data/2.5"
+        static let metricQuery = (name: "units", value: "metric")
+    }
+    
     private let decoder = JSONDecoder()
     
     func execute<T>(_ route: Route, completion: @escaping ServiceCompletion<T>) where T: Decodable {
@@ -72,22 +77,22 @@ class NetworkService: NetworkServiceContext {
     }
     
     func getCurrentWeather(coordinate: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<CurrentWeatherModel>) {
-        let path = "/data/2.5/weather"
+        let path = "\(Constants.basePath)/weather"
         let queryItems: [String: LosslessStringConvertible] = [
             "lat": coordinate.latitude,
             "lon": coordinate.longitude,
-            "units": "metric"
+            Constants.metricQuery.name: Constants.metricQuery.value
         ]
         let router = Router(path: path, queryItems: queryItems)
         execute(router, completion: completion)
     }
     
     func getHourlyWeather(coordinate: CLLocationCoordinate2D, completion: @escaping ServiceCompletion<HourlyWeatherModel>) {
-        let path = "/data/2.5/forecast"
+        let path = "\(Constants.basePath)/forecast"
         let queryItems: [String: LosslessStringConvertible] = [
             "lat": coordinate.latitude,
             "lon": coordinate.longitude,
-            "units": "metric"
+            Constants.metricQuery.name: Constants.metricQuery.value
         ]
         let router = Router(path: path, queryItems: queryItems)
         execute(router, completion: completion)

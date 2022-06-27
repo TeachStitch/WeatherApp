@@ -10,13 +10,13 @@ import Swinject
 class ViewModelAssembly: Assembly {
     func assemble(container: Container) {
         container.register(WeatherViewModelProvider.self) { resolver in
-            WeatherViewModel(model: resolver.resolve(WeatherModelProvider.self))
+            WeatherViewModel(model: resolver.resolve(WeatherModelProvider.self), resolver: resolver)
         }
         .inObjectScope(.transient)
-//        .initCompleted { resolver, viewModel in
-//            let viewModel = viewModel as? WeatherViewModel
-//            let viewController = resolver.resolve(WeatherViewController.self)
-//            viewModel?.delegate = viewController
-//        }
+        
+        container.register(MapViewModelProvider.self) { _ in
+            MapViewModel()
+        }
+        .inObjectScope(.transient)
     }
 }

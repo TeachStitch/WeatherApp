@@ -10,7 +10,6 @@ import UIKit
 class WeatherViewController: UIViewController {
 
     private enum Constants {
-        static let locationBarButtonText = "Test"
         
         enum Layout {
             
@@ -21,23 +20,12 @@ class WeatherViewController: UIViewController {
         case mainInfo = 0
         case hourlyWeather
         case dailyWeather
-        
-        var itemCount: Int {
-            switch self {
-            case .mainInfo:
-                return 1
-            case .hourlyWeather:
-                return hourlyModels.count
-            case .dailyWeather:
-                return weekModels.count
-            }
-        }
     }
     
     private let viewModel: WeatherViewModelProvider?
     
     private lazy var locationBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: Constants.locationBarButtonText, style: .plain, target: self, action: #selector(locationButtonTapped))
+        let button = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(locationButtonTapped))
         button.tintColor = .Assets.white
         
         return button
@@ -52,14 +40,13 @@ class WeatherViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Test")
         collectionView.register(MainInfoCollectionViewCell.self)
         collectionView.register(HourlyWeatherCollectionViewCell.self)
         collectionView.register(WeekDayCollectionViewCell.self)
         collectionView.backgroundColor = .Assets.blue01
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
-//        collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         return collectionView
@@ -80,6 +67,13 @@ class WeatherViewController: UIViewController {
         setUpNavigationBar()
         setUpAutoLayoutConstraints()
         viewModel?.onLoad()
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            guard let models = self.viewModel?.hourlyWeatherModel?.hourlyForecasts else { return }
+//
+//            let test = models[4].date.compare(.now)
+//            print(test)
+//        }
     }
     
     private func setUpSubviews() {
@@ -210,11 +204,11 @@ extension WeatherViewController: UICollectionViewDataSource {
         case .mainInfo:
             return 1
         case .hourlyWeather:
-            return viewModel?.hourlyWeatherModel?.hourlyForecasts.count ?? 0
+            return viewModel?.todayForecasts?.count ?? .zero
         case .dailyWeather:
             return viewModel?.hourlyWeatherModel?.hourlyForecasts.count ?? 0
         case .none:
-            return 0
+            return .zero
         }
     }
     
@@ -237,7 +231,7 @@ extension WeatherViewController: UICollectionViewDataSource {
         case .hourlyWeather:
             guard
                 let cell: HourlyWeatherCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath),
-                let models = viewModel?.hourlyWeatherModel?.hourlyForecasts as? [BaseWeatherInfoConfiguration]
+                let models = viewModel?.todayForecasts as? [BaseWeatherInfoConfiguration]
             else {
                 return collectionView.dequeueReusableCell(withReuseIdentifier: HourlyWeatherCollectionViewCell.identifier, for: indexPath)
             }
@@ -256,6 +250,18 @@ extension WeatherViewController: UICollectionViewDataSource {
             return cell
         case .none:
             return UICollectionViewCell()
+        }
+    }
+}
+
+extension WeatherViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if SectionKind(rawValue: indexPath.section) == .dailyWeather {
+            print(#function)
+//            guard let day = viewModel?.hourlyWeatherModel?.hourlyForecasts[indexPath.item].date else { return }
+//            let filered = viewModel?.hourlyWeatherModel?.hourlyForecasts.filter { Calendar.current.isDate($0.date, inSameDayAs: day) }
+//            let indexSet = IndexSet(integer: indexPath.section)
+//            collectionView.reloadSections(indexSet)
         }
     }
 }

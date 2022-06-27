@@ -16,5 +16,10 @@ class ModelAssembly: Assembly {
             )
         }
         .inObjectScope(.transient)
+        
+        container.register(MapModelProvider.self) { _ in
+            MapModel()
+        }
+        .inObjectScope(.transient)
     }
 }

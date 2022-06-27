@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Swinject
 
 protocol WeatherViewModelProvider: AnyObject {
     var hourlyWeatherModel: HourlyWeatherMappedModel? { get }
+    var todayForecasts: [HourlyForecast]? { get }
     func onLoad()
     func locationTapped()
     func retryFetch()
@@ -31,11 +33,17 @@ class WeatherViewModel: WeatherViewModelProvider {
         }
     }
     
+    var todayForecasts: [HourlyForecast]? {
+        hourlyWeatherModel?.hourlyForecasts.filter { Calendar.current.isDateInToday($0.date) }
+    }
+    
     weak var delegate: WeatherViewModelDelegate?
     private let model: WeatherModelProvider?
+    private let resolver: Resolver
     
-    init(model: WeatherModelProvider?) {
+    init(model: WeatherModelProvider?, resolver: Resolver) {
         self.model = model
+        self.resolver = resolver
     }
     
     func onLoad() {
@@ -51,7 +59,8 @@ class WeatherViewModel: WeatherViewModelProvider {
     }
     
     func mapTapped() {
-        print(#function)
+        guard let viewController = resolver.resolve(MapViewController.self) else { return }
+        delegate?.pushViewController(viewController)
     }
     
     private func getHourlyWeather() {

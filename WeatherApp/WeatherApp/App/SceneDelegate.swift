@@ -43,6 +43,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func requestLocation() {
-        assembler.resolver.resolve(LocationServiceContenxt.self)?.requestAuthorization()
+        let locationService = assembler.resolver.resolve(LocationServiceContenxt.self)
+        switch locationService?.authorizationStatus {
+        case .notDetermined:
+            locationService?.requestAuthorization()
+        default: break
+        }
     }
 }

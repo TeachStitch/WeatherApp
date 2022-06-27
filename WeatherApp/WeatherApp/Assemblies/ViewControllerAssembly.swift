@@ -16,5 +16,12 @@ class ViewControllerAssembly: Assembly {
             return viewController
         }
         .inObjectScope(.transient)
+        
+        container.register(MapViewController.self) { resolver in
+            let viewModel = resolver.resolve(MapViewModelProvider.self)
+            let viewController = MapViewController(viewModel: viewModel)
+            return viewController
+        }
+        .inObjectScope(.transient)
     }
 }
